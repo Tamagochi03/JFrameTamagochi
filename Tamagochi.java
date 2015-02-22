@@ -1,8 +1,22 @@
-//Esta es la primera versión del JFrame del Tamgochi (falta algo de estética, cosa que checaré mñn) /* Este es el JFrame de Tamagochi */
+ /*
+ *Este es el JFrame de Tamagochi 
+ */
 
-package tamagochi; import java.awt.; import java.awt.event.; import javax.swing.; import javax.swing.event.; import com.sun.j3d.utils.geometry.; import com.sun.j3d.utils.universe.; import com.sun.j3d.utils.image.; import javax.media.j3d.; import javax.vecmath.; /* *
+package tamagochi; 
+import java.awt.*; 
+import java.awt.event.*; 
+import javax.swing.*; 
+import javax.swing.event.*; 
+import com.sun.j3d.utils.geometry.*; 
+import com.sun.j3d.utils.universe.*; 
+import com.sun.j3d.utils.image.*; 
+import javax.media.j3d.*; 
+import javax.vecmath.*;
 
-@author Yareli Avilés */ 
+
+/* *
+@author Yareli Avilés 
+*/ 
 
 public class Tamagochi extends Frame {
 
@@ -11,24 +25,35 @@ public class Tamagochi extends Frame {
   private Texture feliz, enfermo;
   private static Texture texture;
   private TextureLoader loader;
-
+  
+  
+  /**Declaración de Paneles*/
+  
   private JPanel jpB;
-          private JPanel jpL;
-          private JPanel jpPb;
-          private JPanel jpL1;
+  private JPanel jpL;
+  private JPanel jpPb;
+  private JPanel jpL1;
+  private JPanel jpE;
 
-
-  private JButton bcomer; //comer
+  
+  /**Declaración de Botones y etiquetas*/
+  
+  private JButton bcomer; //Boton de comer
   private JLabel lhambre; 
-  private JButton bdormir; //dormir
+  private JButton bdormir; //Boton de dormir
   private JLabel lsueno;
-  private JButton bjugar; //jugar
+  private JButton bjugar; //Boton de jugar
+  private JLabel lAburrimiento;
   private JLabel lEnergia;
-          private JLabel mensaje;
-
-  private JProgressBar PbSuenio = new JProgressBar(); //pb1
-  private JProgressBar PbHambre = new JProgressBar(); //pb2
-  private JProgressBar PbEnergia = new JProgressBar(); //pb3
+  private JLabel mensaje;
+  
+  
+  /**Declaración de Barras de progreso*/
+  
+  private JProgressBar PbSuenio; 
+  private JProgressBar PbHambre; 
+  private JProgressBar PbAburrimiento; 
+  private JProgressBar PbEnergia; 
 
 
   static Sphere sphere;
@@ -39,33 +64,42 @@ public class Tamagochi extends Frame {
       super("Tamagochi 3D");
 
 
-      setResizable(false); setSize(1300, 1500);
+      setResizable(false); 
+      setSize(900, 600);
+      setLocationRelativeTo(null);
       GraphicsConfiguration config =     
       SimpleUniverse.getPreferredConfiguration();
+      
+
+
+      /**Inicialización de Variables*/
+      
       canvas3D = new Canvas3D(config);
-                  canvas3D.setBounds(100, 100, 500, 500);
-
-
+      canvas3D.setSize(500, 00);
+      
       bcomer=new JButton("Comer");
-                  bcomer.setBounds(300, 200, 50, 50);
-                  lhambre=new JLabel("Hambre");
+      lhambre=new JLabel("Hambre");
 
       bdormir=new JButton("Dormir");
-                  bdormir.setBounds(300, 200, 50, 50);
       lsueno=new JLabel("Sueno");
 
       bjugar=new JButton("Jugar");
-                  bjugar.setBounds(300, 200, 50, 50);
-      lEnergia=new JLabel("Aburrimiento");
+      lAburrimiento = new JLabel("Aburrimiento");
+      lEnergia=new JLabel("Energía");
 
-                  mensaje = new JLabel("Hola, soy Rayman");
-                  mensaje.setBounds(1000, 500, 50, 50);
+      mensaje = new JLabel("Hola, soy Rayman");
+                  
+      PbSuenio = new JProgressBar();
+      PbHambre = new JProgressBar();
+      PbAburrimiento = new JProgressBar();
+      PbEnergia = new JProgressBar();
 
-
+      
 
       jpB = new JPanel();
-                  jpL = new JPanel();
-                  jpL1 = new JPanel();
+      jpL = new JPanel();
+      jpL1 = new JPanel();
+      jpE = new JPanel();
 
       jpL.add(lhambre); jpL.add(PbSuenio);
       jpB.add(bcomer);
@@ -73,17 +107,21 @@ public class Tamagochi extends Frame {
       jpL.add(lsueno); jpL.add(PbHambre);
       jpB.add(bdormir);
 
-      jpL.add(lEnergia); jpL.add(PbEnergia);
+      jpL.add(lAburrimiento); jpL.add(PbAburrimiento);
       jpB.add(bjugar);
-                  jpL1.add(mensaje);
+      jpE.add(lEnergia);
+      jpE.add(PbEnergia);
+      jpL1.add(mensaje);
 
 
 
 
-                  add("North", jpL);
-                  add("Center", jpB);
-                  add("East", jpL1);
-                  add("South",canvas3D);
+      add("North", jpL);
+      add("East", jpB);
+      add("Center", jpL1);
+      add("West",canvas3D);
+      add("South", jpE);
+     
       setup3DGraphics();
       setVisible(true);
 
@@ -95,7 +133,7 @@ public class Tamagochi extends Frame {
       SimpleUniverse universe = new SimpleUniverse(canvas3D);
       BranchGroup group = new BranchGroup();
       int primflags = Primitive.GENERATE_NORMALS +
-      Primitive.GENERATE_TEXTURE_COORDS/*+Primitive.ENABLE_APPEARANCE_MODIFY*/ ; 
+      Primitive.GENERATE_TEXTURE_COORDS/*+Primitive.ENABLE_APPEARANCE_MODIFY */; 
 
           //ap.setTextureUnitState(textureUnitState);  
       sphere = new Sphere(0.5f, primflags, ap);
